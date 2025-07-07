@@ -4,13 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")  //
+@Table(name = "users")
 public class User {
 
     @Id
@@ -25,15 +21,24 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
+    // ✅ Default constructor (required by JPA)
     public User() {
     }
 
+    // ✅ All-fields constructor
     public User(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
     }
 
+    // ✅ Constructor for test: only name and email
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    // ✅ Getters & Setters
     public Long getId() {
         return id;
     }
