@@ -38,8 +38,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @NotBlank(message = "password should be enter")
-    @Size(min = 6,max = 14, message = "password is greater than 6 and lesser than 14")
+    @Column(name = "password")
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)

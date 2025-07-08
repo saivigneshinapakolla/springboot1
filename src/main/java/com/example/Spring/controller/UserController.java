@@ -32,8 +32,6 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-
-
     @PostMapping
     public ResponseEntity<List<User>> createUser(@Valid @RequestBody List<@Valid User> users) {
         List<User> savedUsers = userRepository.saveAll(users);
@@ -82,7 +80,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword())); // fixed syntax
-        user.setRoles(Collections.singleton("USER")); // or "ROLE_USER" depending on your needs
+//        user.setRoles(Collections.singleton("USER")); // or "ROLE_USER" depending on your needs
         User savedUser = userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
