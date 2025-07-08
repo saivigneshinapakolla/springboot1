@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = {
-        "http://localhost:8087",
+        "http://localhost:8090",
         "http://127.0.0.1:5500"
 })
 @RestController
@@ -49,6 +49,11 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/page")
+    public Page<User> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User userDetails) {
         return userRepository.findById(id).map(existingUser -> {
@@ -69,10 +74,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/page")
-    public Page<User> getUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
+
 
     @PostMapping("/register") // corrected the path
     public ResponseEntity<User> registerUser(@Valid @RequestBody User user) {
