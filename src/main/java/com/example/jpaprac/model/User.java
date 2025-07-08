@@ -4,7 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -19,56 +26,24 @@ public class User {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
+    @Column(unique = true)
     private String email;
 
-    // ✅ Default constructor (required by JPA)
-    public User() {
-    }
+    @NotBlank(message = "password should be enter")
+    @Size(min = 6, max = 14, message = "password is greater than 6 and lesser than 14")
+    private String password;
 
-    // ✅ All-fields constructor
-    public User(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 
-    // ✅ Constructor for test: only name and email
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
+    @Column(name = "created_at", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    // ✅ Getters & Setters
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }
